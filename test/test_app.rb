@@ -8,12 +8,12 @@ class TestApp< Minitest::Test
   end 
 
   context 'API::V1::Character' do
-    context 'errors' do  
-      should 'when environment has no character set' do 
-        assert_raises(RuntimeError){
-          get '/character'
-        }
-      end
+
+    context 'error' do 
+      should 'return 500 when character was not set' do 
+        get '/character'
+        assert last_response.server_error?
+      end 
     end 
 
     context 'request' do 
@@ -23,11 +23,10 @@ class TestApp< Minitest::Test
 
       context '/character' do 
         should 'GET /character' do 
-          get '/character/'
+          get '/character'
           assert last_response.ok?
           assert last_response.body.include?('character')
         end
-
       end 
 
       context '/info' do 
